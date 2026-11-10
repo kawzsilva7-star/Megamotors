@@ -132,6 +132,14 @@ h2::after{content:"";display:block;width:44px;height:4px;border-radius:2px;backg
   background:rgba(14,14,14,.85);color:var(--amarelo);font-size:1.7rem;line-height:1;cursor:pointer}
 .seta.esq{left:4px}.seta.dir{right:4px}
 @media (hover:hover) and (pointer:fine){.seta{display:block}}
+.avalie{background:linear-gradient(135deg,rgba(255,212,0,.18),rgba(255,212,0,.04));border:2px solid var(--amarelo);border-radius:var(--raio);
+  padding:18px 16px 20px;text-align:center;margin:0 0 24px}
+.estrelas{color:var(--amarelo);font-size:2rem;letter-spacing:5px;line-height:1}
+.avalie p{margin:10px 0 16px;color:#ececec;font-weight:600}
+.btn.grande{position:relative;min-height:64px;font-size:1.2rem;width:100%;max-width:420px}
+.btn.grande::after{content:"";position:absolute;inset:-2px;border-radius:14px;border:2px solid var(--amarelo);pointer-events:none;
+  animation:anel 2.8s cubic-bezier(.23,1,.32,1) infinite}
+@keyframes anel{0%{transform:scale(1);opacity:.8}70%,100%{transform:scale(1.07,1.3);opacity:0}}
 .selo-bloco{display:flex;align-items:center;gap:16px}
 .selo-redondo{flex:none;width:96px;height:96px;border-radius:50%;border:3px solid var(--amarelo);overflow:hidden;background:#222;
   box-shadow:0 0 0 5px rgba(255,212,0,.15)}
@@ -390,12 +398,16 @@ footer .contatos small{display:block;color:var(--amarelo);font-size:.75rem;text-
       </div>
     </div>
     <p class="lead" id="feedbacksTexto"></p>
+    <div class="avalie">
+      <div class="estrelas" aria-hidden="true">★★★★★</div>
+      <p>Gostou do nosso atendimento? Sua avaliação ajuda muito!</p>
+      <button class="btn grande" id="btnGoogle" type="button">Avalie no Google</button>
+    </div>
     <div class="carrossel-area">
       <button class="seta esq" type="button" id="setaEsq" aria-label="Anterior">‹</button>
       <div class="carrossel" id="videosClientes" tabindex="0" aria-label="Vídeos e fotos de clientes"></div>
       <button class="seta dir" type="button" id="setaDir" aria-label="Próximo">›</button>
     </div>
-    <button class="btn" id="btnGoogle" type="button">★ Avalie no Google</button>
   </div>
 </section>
 
