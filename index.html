@@ -140,15 +140,15 @@ h2::after{content:"";display:block;width:44px;height:4px;border-radius:2px;backg
 .btn.grande::after{content:"";position:absolute;inset:-2px;border-radius:14px;border:2px solid var(--amarelo);pointer-events:none;
   animation:anel 2.8s cubic-bezier(.23,1,.32,1) infinite}
 @keyframes anel{0%{transform:scale(1);opacity:.8}70%,100%{transform:scale(1.07,1.3);opacity:0}}
-.selo-bloco{display:flex;align-items:center;gap:16px}
-.selo-redondo{flex:none;width:104px;height:104px;border-radius:50%;filter:drop-shadow(0 4px 12px rgba(0,0,0,.55))}
-.selo-redondo img{object-position:50% 50%}
-.selo-redondo .foto{width:100%;height:100%;border-radius:50%;border:0}
-.selo-redondo .foto{background:transparent}
-.selo-redondo .foto.vazia{border:2px dashed #4a4a4a;background:#222}
-.selo-redondo .ph-nome{font-size:.55rem}
-.selo-redondo .ph-tag{font-size:.7rem}
-.selo-bloco h2{margin:0}
+h2.centro{text-align:center}
+h2.centro::after{margin-left:auto;margin-right:auto}
+.selo-grande{width:min(82vw,380px);aspect-ratio:1/1;margin:22px auto 18px;filter:drop-shadow(0 10px 26px rgba(0,0,0,.6))}
+.selo-grande .foto{width:100%;height:100%;border-radius:50%;background:transparent}
+.selo-grande .foto.vazia{border:3px dashed #4a4a4a;background:#222}
+.chamada{font-size:1.55rem;font-weight:800;line-height:1.25;text-align:center;margin:0 auto 10px;max-width:22em;text-wrap:balance}
+.chamada em{font-style:normal;color:var(--amarelo)}
+.chamada2{font-size:1.15rem;text-align:center;color:#d6d6d6;margin:0 0 24px}
+@media (min-width:600px){.chamada{font-size:2rem}}
 /* visualizador em tela grande (lightbox) */
 .lb{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:56px 12px 20px;animation:lbfundo .2s ease-out}
@@ -392,13 +392,10 @@ footer .contatos small{display:block;color:var(--amarelo);font-size:.75rem;text-
 <!-- 9. FEEDBACKS -->
 <section id="feedbacks">
   <div class="wrap">
-    <div class="selo-bloco">
-      <div class="selo-redondo" id="seloSatisfacao"></div>
-      <div>
-        <h2 id="feedbacksTitulo">Avaliações de clientes</h2>
-      </div>
-    </div>
-    <p class="lead" id="feedbacksTexto"></p>
+    <h2 id="feedbacksTitulo" class="centro">Avaliações de clientes</h2>
+    <div class="selo-grande" id="seloSatisfacao"></div>
+    <p class="chamada" id="feedbacksTexto"></p>
+    <p class="chamada2" id="feedbacksTexto2"></p>
     <div class="avalie">
       <div class="estrelas" aria-hidden="true">★★★★★</div>
       <p>Gostou do nosso atendimento? Sua avaliação ajuda muito!</p>
@@ -732,7 +729,15 @@ footer .contatos small{display:block;color:var(--amarelo);font-size:.75rem;text-
   /* ---- 9. feedbacks: carrossel automático de vídeos e fotos ---- */
   var FB = DADOS.feedbacks;
   if (FB.titulo) $("feedbacksTitulo").textContent = FB.titulo;
-  $("feedbacksTexto").textContent = FB.texto;
+  (function () {
+    var alvo = $("feedbacksTexto"), pal = FB.destaques || [];
+    var partes = pal.length ? FB.texto.split(new RegExp("(" + pal.join("|") + ")", "gi")) : [FB.texto];
+    partes.forEach(function (t) {
+      if (pal.some(function (w) { return w.toLowerCase() === t.toLowerCase(); })) alvo.appendChild(h("em", { text: t }));
+      else alvo.appendChild(document.createTextNode(t));
+    });
+    $("feedbacksTexto2").textContent = FB.texto2 || "";
+  })();
   $("seloSatisfacao").appendChild(foto(L.selo, "Selo Mega Motors"));
   var carrossel = $("videosClientes");
   var lista = FB.itens;
@@ -935,7 +940,7 @@ footer .contatos small{display:block;color:var(--amarelo);font-size:.75rem;text-
       });
     }, { threshold: 0.08 });
     var n = 0;
-    Array.prototype.forEach.call(document.querySelectorAll("section h2, #gradeProdutos .card, #gradeSeminovos .card, .beneficio, .fotos2 figure, .info > div"), function (el) {
+    Array.prototype.forEach.call(document.querySelectorAll("section h2, .selo-grande, .chamada, #gradeProdutos .card, #gradeSeminovos .card, .beneficio, .fotos2 figure, .info > div"), function (el) {
       el.classList.add("rev");
       el.style.transitionDelay = (n++ % 4) * 50 + "ms";
       io.observe(el);

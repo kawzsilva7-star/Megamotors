@@ -139,7 +139,10 @@ const DADOS = {
   /* ---------- FEEDBACKS DE CLIENTES ---------- */
   feedbacks: {
     titulo: "Avaliações de clientes",
-    texto: "Prezamos pela sua felicidade e pela sua satisfação com o nosso produto. Veja alguns clientes que já rodam com a Mega Motors.",
+    // Frase grande embaixo do selo. As palavras em "destaques" ficam em amarelo.
+    texto: "Prezamos pela sua felicidade e pela sua satisfação com o nosso produto ❤️",
+    destaques: ["felicidade", "satisfação"],
+    texto2: "Veja quem já roda com a Mega Motors 🛵⚡🐶",
     // Carrossel automático: vídeos e fotos de clientes passam sozinhos (pausa quando alguém toca ou dá play).
     // tipo "video": "arquivo" fica na pasta "videos"; "capa" é a imagem antes do play (opcional).
     // tipo "foto": "arquivo" fica na pasta "imagens". Para adicionar, copie uma linha.
