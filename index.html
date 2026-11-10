@@ -141,10 +141,11 @@ h2::after{content:"";display:block;width:44px;height:4px;border-radius:2px;backg
   animation:anel 2.8s cubic-bezier(.23,1,.32,1) infinite}
 @keyframes anel{0%{transform:scale(1);opacity:.8}70%,100%{transform:scale(1.07,1.3);opacity:0}}
 .selo-bloco{display:flex;align-items:center;gap:16px}
-.selo-redondo{flex:none;width:96px;height:96px;border-radius:50%;border:3px solid var(--amarelo);overflow:hidden;background:#222;
-  box-shadow:0 0 0 5px rgba(255,212,0,.15)}
+.selo-redondo{flex:none;width:104px;height:104px;border-radius:50%;filter:drop-shadow(0 4px 12px rgba(0,0,0,.55))}
+.selo-redondo img{object-position:50% 50%}
 .selo-redondo .foto{width:100%;height:100%;border-radius:50%;border:0}
-.selo-redondo .foto.vazia{border:2px dashed #4a4a4a}
+.selo-redondo .foto{background:transparent}
+.selo-redondo .foto.vazia{border:2px dashed #4a4a4a;background:#222}
 .selo-redondo .ph-nome{font-size:.55rem}
 .selo-redondo .ph-tag{font-size:.7rem}
 .selo-bloco h2{margin:0}
