@@ -1,0 +1,14 @@
+FOTOS DO SITE - coloque aqui os arquivos com EXATAMENTE estes nomes
+(ou troque os nomes em dados.js). Se faltar uma foto, o site mostra um espaço reservado.
+
+Topo:        fachada.jpg   |   Logo: logo.png (fundo transparente)  icone.png (favicon, quadrado)
+Catalogo:    scooter-1.jpg scooter-2.jpg scooter-3.jpg (fotos provisorias do Instagram)  bike-1.jpg  patinete-1.jpg  triciclo-1.jpg  infantil-1.jpg  capacete-1.jpg
+Seminovos:   seminovo-1.jpg  seminovo-2.jpg  seminovo-3.jpg
+Sobre nos:   loja-1.jpg loja-2.jpg loja-3.jpg (provisorias, tiradas de posts de terceiros no Instagram)  equipe-1.jpg
+Clientes:    cliente-1.jpg (real) ... cliente-4.jpg
+
+Dica: use fotos de ate 1 MB (largura de 1200 px basta) para o site abrir rapido no celular.
+
+Selo redondo (mascote): selo.png  (quadrado, 1024 x 1024, aparece em circulo na secao de avaliacoes)
+Equipe: equipe-1.jpg a equipe-3.jpg (recortes do video "Ficha aprovada")
+Motos: scooter-1.jpg a scooter-7.jpg, triciclo-1.jpg e triciclo-2.jpg (reais, do Instagram da loja)

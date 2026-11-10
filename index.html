@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0e0e0e">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="imagens/icone.png">
+<link rel="apple-touch-icon" href="imagens/icone.png">
+<title>Mega Motors - Mobilidade Elétrica (prévia)</title>
+<meta name="description" content="Mega Motors - Mobilidade Elétrica. A forma inteligente de se locomover. Campinas - SP.">
+<style>
+:root{
+  --fundo:#0e0e0e; --fundo2:#161616; --card:#1e1e1e; --linha:#2f2f2f;
+  --texto:#f3f3f3; --suave:#a8a8a8; --amarelo:#ffd400; --amarelo-escuro:#e0b900;
+  --verde:#25d366; --raio:16px; --max:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:68px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fundo);color:var(--texto);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  padding-bottom:84px}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{line-height:1.2;margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 18px}
+section{padding:44px 0;border-top:1px solid var(--linha)}
+section:nth-of-type(even){background:var(--fundo2)}
+h2{font-size:1.65rem;margin-bottom:6px}
+h2::after{content:"";display:block;width:44px;height:4px;border-radius:2px;background:var(--amarelo);margin-top:10px}
+.lead{color:var(--suave);margin:14px 0 22px}
+:focus-visible{outline:3px solid var(--amarelo);outline-offset:2px}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:12px 24px;
+  border-radius:14px;border:2px solid var(--amarelo);background:var(--amarelo);color:#111;
+  font-weight:700;font-size:1.05rem;font-family:inherit;text-decoration:none;cursor:pointer;text-align:center;width:100%;
+  transition:transform .12s,background .12s}
+.btn:active{transform:scale(.98)}
+.btn:hover{background:var(--amarelo-escuro);border-color:var(--amarelo-escuro)}
+.btn.sec{background:transparent;color:var(--amarelo)}
+.btn.sec:hover{background:rgba(255,212,0,.12)}
+.btn svg{width:22px;height:22px;flex:none}
+.btn.auto{width:auto}
+
+/* barra do topo */
+.barra{position:sticky;top:0;z-index:50;background:rgba(14,14,14,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--linha)}
+.barra .wrap{display:flex;align-items:center;justify-content:space-between;min-height:58px}
+.marca{font-weight:800;letter-spacing:.2px;text-decoration:none;display:flex;align-items:center}
+.marca img{height:46px;width:auto;display:block}
+.logo-rodape{height:84px;width:auto;margin-bottom:14px}
+.marca b{color:var(--amarelo)}
+.menu-btn{min-height:44px;min-width:44px;padding:0 16px;border-radius:12px;border:1px solid var(--linha);
+  background:var(--card);color:var(--texto);font-weight:600;font-size:.95rem;font-family:inherit;cursor:pointer}
+.menu-lista{display:none;background:var(--fundo2);border-bottom:1px solid var(--linha)}
+.menu-lista.aberto{display:block}
+.menu-lista a{display:block;padding:14px 18px;text-decoration:none;border-top:1px solid var(--linha);font-weight:600}
+.menu-lista a:active{background:var(--card)}
+
+/* topo / hero */
+.hero{border-top:0;padding:30px 0 40px;background:
+  radial-gradient(600px 300px at 85% -10%,rgba(255,212,0,.16),transparent 70%),var(--fundo)}
+.hero .tag{display:inline-block;color:var(--amarelo);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-size:.8rem}
+.hero h1{font-size:2.6rem;margin:8px 0 6px}
+.hero h1 span{color:var(--amarelo)}
+.hero p{font-size:1.2rem;color:#dcdcdc;margin:0 0 22px}
+.acoes{display:flex;flex-wrap:wrap;gap:12px}
+.acoes .btn{flex:1 1 220px}
+.horarios{margin-top:14px;background:var(--card);border:1px solid var(--linha);border-radius:var(--raio);padding:18px;animation:surge .2s ease-out}
+.horarios[hidden]{display:none}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:700;margin-bottom:12px}
+.status::before{content:"";width:10px;height:10px;border-radius:50%;background:#777}
+.status.aberto{color:#4be07f}.status.aberto::before{background:#4be07f}
+.status.fechado{color:#ff7a6b}.status.fechado::before{background:#ff7a6b}
+.horarios ul{list-style:none;margin:0 0 16px;padding:0}
+.horarios li{display:flex;justify-content:space-between;gap:12px;padding:11px 12px;border-bottom:1px solid var(--linha);border-radius:8px}
+.horarios li:last-child{border-bottom:0}
+.horarios li.hoje{background:rgba(255,212,0,.12);font-weight:700}
+.horarios li .h{color:var(--suave)}
+.horarios li.hoje .h{color:var(--amarelo)}
+.hero .foto{margin-top:26px;aspect-ratio:4/5;border-radius:var(--raio);border:1px solid var(--linha)}
+
+/* fotos e espaços reservados */
+.foto{position:relative;overflow:hidden;background:#262626;border-radius:12px}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto.vazia{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;
+  background:repeating-linear-gradient(45deg,#242424,#242424 12px,#2a2a2a 12px,#2a2a2a 24px);border:2px dashed #4a4a4a;color:var(--suave)}
+.foto.vazia .ph-tag{color:var(--amarelo);font-weight:800}
+.foto.vazia .ph-nome{font-size:.8rem;word-break:break-all;padding:0 8px}
+
+/* catálogo */
+.filtros{display:flex;gap:10px;overflow-x:auto;padding:4px 18px 14px;margin:0 -18px;scrollbar-width:none}
+.filtros::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:46px;padding:0 20px;border-radius:999px;border:1.5px solid var(--linha);background:var(--card);
+  color:var(--texto);font-weight:600;font-size:.98rem;font-family:inherit;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--amarelo);border-color:var(--amarelo);color:#111}
+.grade{display:grid;gap:16px;grid-template-columns:1fr}
+.card{background:var(--card);border:1px solid var(--linha);border-radius:var(--raio);overflow:hidden;display:flex;flex-direction:column}
+.card .foto{aspect-ratio:1/1;border-radius:0}
+.card .foto img{object-position:50% 72%}
+.card-corpo{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font-size:1.15rem}
+.dado{display:flex;justify-content:space-between;gap:12px;color:var(--suave);font-size:.95rem;border-bottom:1px dashed var(--linha);padding-bottom:6px}
+.dado b{color:var(--texto);font-weight:600;text-align:right}
+.card .btn{margin-top:auto}
+.card-corpo .btn{margin-top:10px}
+.selo{align-self:flex-start;background:rgba(255,212,0,.15);color:var(--amarelo);border:1px solid var(--amarelo);
+  border-radius:999px;padding:2px 12px;font-size:.8rem;font-weight:700}
+.vazio{color:var(--suave);padding:20px 0}
+.selos{display:flex;gap:8px;flex-wrap:wrap}
+.selo.ex{background:transparent;color:var(--suave);border-color:#666}
+.preco{font-size:1.4rem;font-weight:800;color:var(--amarelo)}
+.video video{width:100%;max-height:560px;display:block;background:#000;object-fit:contain}
+.carrossel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 18px;padding:2px 18px 14px;margin:0 -18px 14px;scrollbar-width:thin}
+.carrossel .video{flex:0 0 72%;max-width:300px;scroll-snap-align:start}
+.carrossel:empty{display:none}
+.carrossel-area{position:relative}
+.seta{display:none;position:absolute;top:42%;z-index:5;width:46px;height:46px;border-radius:50%;border:1px solid var(--linha);
+  background:rgba(14,14,14,.85);color:var(--amarelo);font-size:1.7rem;line-height:1;cursor:pointer}
+.seta.esq{left:4px}.seta.dir{right:4px}
+@media (hover:hover) and (pointer:fine){.seta{display:block}}
+.foto-slide .foto{aspect-ratio:9/16;border-radius:0}
+.selo-bloco{display:flex;align-items:center;gap:16px}
+.selo-redondo{flex:none;width:96px;height:96px;border-radius:50%;border:3px solid var(--amarelo);overflow:hidden;background:#222;
+  box-shadow:0 0 0 5px rgba(255,212,0,.15)}
+.selo-redondo .foto{width:100%;height:100%;border-radius:50%;border:0}
+.selo-redondo .foto.vazia{border:2px dashed #4a4a4a}
+.selo-redondo .ph-nome{font-size:.55rem}
+.selo-redondo .ph-tag{font-size:.7rem}
+.selo-bloco h2{margin:0}
+/* entrada suave das seções (só transform e opacity) */
+.rev{opacity:0;transform:translateY(14px)}
+.rev.vis{opacity:1;transform:none;transition:opacity .45s cubic-bezier(.23,1,.32,1),transform .45s cubic-bezier(.23,1,.32,1)}
+@media (hover:hover) and (pointer:fine){
+  .card{transition:transform .2s cubic-bezier(.23,1,.32,1),border-color .2s}
+  .card:hover{transform:translateY(-3px);border-color:var(--amarelo)}
+}
+@media (prefers-reduced-motion:reduce){.rev{opacity:1;transform:none}}
+
+/* faixa de ação (test drive) */
+.faixa{background:var(--amarelo);color:#111;border-radius:var(--raio);padding:26px 20px;text-align:center}
+.faixa h2::after{background:#111;margin-left:auto;margin-right:auto}
+.faixa p{margin:12px 0 20px}
+.faixa .btn{background:#111;border-color:#111;color:var(--amarelo)}
+.faixa .btn:hover{background:#000}
+
+/* assistência */
+.aviso{display:inline-block;background:rgba(255,212,0,.14);border:1px solid var(--amarelo);color:var(--amarelo);
+  padding:6px 14px;border-radius:999px;font-weight:700;margin-bottom:18px}
+.obs{color:var(--suave);font-size:.9rem;margin:0 0 20px}
+.sub-titulo{font-size:1.1rem;color:var(--amarelo);margin:0 0 4px}
+.dica{color:var(--suave);font-size:.9rem;margin:0 0 12px}
+.servicos{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px}
+.servico{display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 14px;border-radius:14px;background:var(--card);
+  border:1px solid var(--linha);text-decoration:none}
+.servico:active{background:#262626}
+.servico .nome{flex:1;font-weight:600}
+.servico .nome small{display:block;color:var(--suave);font-size:.8rem;font-weight:400}
+.servico .preco{font-weight:800;color:var(--amarelo);white-space:nowrap}
+.servico .go{flex:none;width:44px;height:44px;border-radius:50%;background:var(--verde);display:grid;place-items:center}
+.servico .go svg{width:24px;height:24px;color:#fff}
+@media (hover:hover) and (pointer:fine){.servico:hover{border-color:var(--amarelo)}}
+.embreve{background:var(--card);border:2px dashed #4a4a4a;border-radius:var(--raio);padding:34px 20px;text-align:center}
+.embreve b{display:inline-block;background:var(--amarelo);color:#111;border-radius:999px;padding:4px 14px;margin-bottom:12px;letter-spacing:.5px}
+.embreve p{margin:0;color:#d0d0d0}
+
+/* vídeos */
+.videos{display:grid;gap:16px;grid-template-columns:1fr}
+.video{background:var(--card);border:1px solid var(--linha);border-radius:var(--raio);overflow:hidden}
+.video iframe{width:100%;height:540px;border:0;background:#111}
+.video .foto{aspect-ratio:9/12;border-radius:0}
+.video p{margin:0;padding:12px 16px;font-weight:600}
+
+/* sobre */
+.sobre p{margin:0 0 14px;color:#dcdcdc}
+.fotos2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.fotos2 figure{margin:0}
+.fotos2 .foto{aspect-ratio:1/1}
+.fotos2 figcaption{color:var(--suave);font-size:.85rem;padding-top:6px}
+
+/* benefícios */
+.beneficios{display:grid;gap:14px;grid-template-columns:1fr}
+.beneficio{background:var(--card);border:1px solid var(--linha);border-radius:var(--raio);padding:22px 20px}
+.beneficio .ico{font-size:2rem;line-height:1}
+.beneficio h3{margin:10px 0 6px;color:var(--amarelo)}
+.beneficio p{margin:0;color:#d0d0d0}
+
+/* feedbacks */
+
+/* chat de perguntas */
+.chat{background:var(--card);border:1px solid var(--linha);border-radius:var(--raio);overflow:hidden}
+.chat-msgs{max-height:380px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.bolha{max-width:86%;padding:11px 15px;border-radius:18px;line-height:1.45;animation:surge .2s ease-out}
+.bolha.bot{align-self:flex-start;background:#2b2b2b;border-bottom-left-radius:4px}
+.bolha.eu{align-self:flex-end;background:var(--amarelo);color:#111;font-weight:600;border-bottom-right-radius:4px}
+.bolha.digitando{color:var(--suave);letter-spacing:3px}
+@keyframes surge{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.chat-opcoes{border-top:1px solid var(--linha);padding:14px;display:flex;flex-wrap:wrap;gap:10px;background:#191919}
+.opcao{min-height:46px;padding:8px 16px;border-radius:999px;border:1.5px solid var(--amarelo);background:transparent;
+  color:var(--amarelo);font-weight:600;font-size:.95rem;font-family:inherit;cursor:pointer;text-align:left}
+.opcao:active{background:rgba(255,212,0,.15)}
+.opcao.limpar{border-color:var(--linha);color:var(--suave)}
+.chat-rodape{padding:0 14px 14px;background:#191919}
+
+/* parcerias */
+
+/* onde estamos */
+.info{display:grid;gap:12px;margin-bottom:18px}
+.info div{background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:14px 16px}
+.info small{display:block;color:var(--amarelo);font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:.75rem;margin-bottom:4px}
+.mapa{width:100%;height:320px;border:0;border-radius:var(--raio);margin-bottom:16px;background:#222}
+.duas{display:grid;gap:12px}
+
+/* rodapé */
+footer{border-top:1px solid var(--linha);padding:34px 0 30px;background:#090909}
+footer h2{font-size:1.2rem}
+footer .contatos{display:grid;gap:10px;margin:18px 0 24px}
+footer .contatos a,footer .contatos span{display:block;padding:14px 16px;border-radius:12px;background:var(--card);
+  border:1px solid var(--linha);text-decoration:none;font-weight:600}
+footer .contatos small{display:block;color:var(--amarelo);font-size:.75rem;text-transform:uppercase;letter-spacing:1px}
+.previa{text-align:center;color:#6f6f6f;font-size:.8rem;margin:0}
+
+/* whatsapp fixo */
+.wa-fixo{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;width:62px;height:62px;border-radius:50%;
+  background:var(--verde);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.5);transition:transform .12s}
+.wa-fixo:active{transform:scale(.94)}
+.wa-fixo svg{width:34px;height:34px;fill:#fff}
+
+/* aviso rápido */
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:70;background:#fff;color:#111;
+  padding:12px 18px;border-radius:12px;font-weight:600;max-width:90%;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+
+/* telas maiores */
+@media (min-width:600px){
+  .grade{grid-template-columns:repeat(2,1fr)}
+  .videos{grid-template-columns:repeat(2,1fr)}
+  .beneficios{grid-template-columns:repeat(3,1fr)}
+  .fotos2{grid-template-columns:repeat(3,1fr)}
+  .duas{grid-template-columns:1fr 1fr}
+  .btn{width:auto}
+  .card .btn,.faixa .btn{width:100%}
+  .faixa .btn{width:auto}
+  .hero h1{font-size:3.4rem}
+}
+@media (min-width:900px){
+  .grade{grid-template-columns:repeat(3,1fr)}
+  .videos{grid-template-columns:repeat(3,1fr)}
+    .hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+  .hero .foto{margin-top:0}
+  .info{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="wrap">
+    <a class="marca" href="#topo" id="marca"></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuLista">Menu</button>
+  </div>
+  <nav class="menu-lista" id="menuLista" aria-label="Seções do site"></nav>
+</header>
+
+<main>
+
+<!-- 1. TOPO -->
+<section class="hero" id="topo">
+  <div class="wrap">
+    <div>
+      <span class="tag" id="heroSegmento"></span>
+      <h1 id="heroNome"></h1>
+      <p id="heroFrase"></p>
+      <div class="acoes" id="heroBotao"></div>
+      <div id="heroHorarios"></div>
+    </div>
+    <div id="heroFoto"></div>
+  </div>
+</section>
+
+<!-- 2. CATÁLOGO -->
+<section id="catalogo">
+  <div class="wrap">
+    <h2>Loja</h2>
+    <p class="lead">Escolha uma categoria e toque em “Tenho interesse” para falar com a gente.</p>
+    <div class="filtros" id="filtros" role="group" aria-label="Filtrar por categoria"></div>
+    <div class="grade" id="gradeProdutos" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- 3. TEST DRIVE -->
+<section id="testdrive">
+  <div class="wrap">
+    <div class="faixa">
+      <h2>Test drive</h2>
+      <p>Quer sentir como é rodar em um veículo elétrico? Agende o seu.</p>
+      <div id="testdriveBotao"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. ASSISTÊNCIA TÉCNICA -->
+<section id="assistencia">
+  <div class="wrap">
+    <h2>Assistência técnica</h2>
+    <p class="lead"><span class="aviso" id="assistenciaAviso"></span></p>
+    <h3 class="sub-titulo" id="assistenciaTitulo">Serviços e preços</h3>
+    <p class="dica">Toque no serviço para agendar pelo WhatsApp.</p>
+    <ul class="servicos" id="listaServicos"></ul>
+    <p class="obs" id="assistenciaObs"></p>
+    <div id="assistenciaBotao"></div>
+  </div>
+</section>
+
+<!-- 5. VÍDEOS -->
+<section id="videos">
+  <div class="wrap">
+    <h2>Vídeos de manutenção</h2>
+    <p class="lead">Dicas e cuidados direto do nosso Instagram.</p>
+    <div class="videos" id="listaVideos"></div>
+    <p style="margin-top:20px"><a class="btn sec auto" id="videosInsta" target="_blank" rel="noopener"></a></p>
+  </div>
+</section>
+
+<!-- 6. SEMINOVOS -->
+<section id="seminovos">
+  <div class="wrap">
+    <h2>Seminovos e consignados</h2>
+    <p class="lead">Opções com preço especial. Toque em “Tenho interesse” para saber mais.</p>
+    <div class="grade" id="gradeSeminovos"></div>
+  </div>
+</section>
+
+<!-- 7. SOBRE -->
+<section id="sobre">
+  <div class="wrap sobre">
+    <h2>Sobre nós</h2>
+    <div id="sobreTexto" style="margin-top:14px"></div>
+    <div class="fotos2" id="sobreFotos"></div>
+  </div>
+</section>
+
+<!-- 8. BENEFÍCIOS -->
+<section id="beneficios">
+  <div class="wrap">
+    <h2>Benefícios</h2>
+    <p class="lead">Por que escolher a mobilidade elétrica.</p>
+    <div class="beneficios" id="listaBeneficios"></div>
+  </div>
+</section>
+
+<!-- 9. FEEDBACKS -->
+<section id="feedbacks">
+  <div class="wrap">
+    <div class="selo-bloco">
+      <div class="selo-redondo" id="seloSatisfacao"></div>
+      <div>
+        <h2 id="feedbacksTitulo">Avaliações de clientes</h2>
+      </div>
+    </div>
+    <p class="lead" id="feedbacksTexto"></p>
+    <div class="carrossel-area">
+      <button class="seta esq" type="button" id="setaEsq" aria-label="Anterior">‹</button>
+      <div class="carrossel" id="videosClientes" tabindex="0" aria-label="Vídeos e fotos de clientes"></div>
+      <button class="seta dir" type="button" id="setaDir" aria-label="Próximo">›</button>
+    </div>
+    <button class="btn" id="btnGoogle" type="button">★ Avalie no Google</button>
+  </div>
+</section>
+
+<!-- 10. PERGUNTAS FREQUENTES -->
+<section id="duvidas">
+  <div class="wrap">
+    <h2>Perguntas frequentes</h2>
+    <p class="lead">Toque em uma pergunta para ver a resposta.</p>
+    <div class="chat">
+      <div class="chat-msgs" id="chatMsgs" role="log" aria-live="polite"></div>
+      <div class="chat-opcoes" id="chatOpcoes"></div>
+      <div class="chat-rodape" id="chatRodape"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. ONDE ESTAMOS -->
+<section id="onde">
+  <div class="wrap">
+    <h2>Onde estamos</h2>
+    <div class="info" style="margin-top:18px">
+      <div><small>Endereço</small><span id="ondeEndereco"></span></div>
+      <div><small>Horário</small><span id="ondeHorario"></span></div>
+    </div>
+    <iframe class="mapa" id="mapa" title="Mapa com a localização da loja" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    <div class="duas">
+      <a class="btn" id="btnRota" target="_blank" rel="noopener">Como chegar</a>
+    </div>
+  </div>
+</section>
+
+<!-- 12. TRABALHE CONOSCO -->
+<section id="trabalhe">
+  <div class="wrap">
+    <h2>Trabalhe conosco</h2>
+    <p class="lead">Quer fazer parte da equipe? Chame a gente no WhatsApp.</p>
+    <div id="trabalheBotao"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- 13. RODAPÉ -->
+<footer>
+  <div class="wrap">
+    <h2 id="rodapeNome"></h2>
+    <div class="contatos" id="rodapeContatos"></div>
+    <p class="previa">Prévia de demonstração</p>
+  </div>
+</footer>
+
+<!-- 14. WHATSAPP FIXO -->
+<a class="wa-fixo" id="waFixo" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"></a>
+
+<script src="dados.js"></script>
+<script>
+(function () {
+  "use strict";
+  var L = DADOS.loja;
+  var WA_SVG = '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16.04 3C9.4 3 4 8.38 4 15.01c0 2.12.55 4.19 1.6 6.01L4 29l8.14-1.56a12 12 0 0 0 3.9.65C22.68 28.09 28 22.7 28 16.07 28 9.4 22.7 3 16.04 3zm0 22.07c-1.2 0-2.38-.2-3.5-.6l-.5-.18-4.84.93.95-4.7-.2-.5a10 10 0 0 1-1.5-5.3c0-5.5 4.5-10 10.04-10 5.5 0 10 4.5 10 10 0 5.6-4.5 10.35-10.45 10.35zm5.5-7.5c-.3-.15-1.8-.9-2.08-1-.28-.1-.48-.15-.68.15-.2.3-.78 1-.96 1.2-.18.2-.35.22-.65.07a8.2 8.2 0 0 1-4.08-3.6c-.3-.53.3-.5.88-1.65.1-.2.05-.38-.02-.53-.08-.15-.68-1.65-.93-2.25-.24-.6-.5-.5-.68-.5h-.58c-.2 0-.53.08-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.1c.15.2 2.1 3.2 5.08 4.5 1.88.8 2.6.88 3.54.74.57-.08 1.8-.74 2.05-1.45.25-.7.25-1.3.18-1.45-.08-.13-.28-.2-.58-.35z"/></svg>';
+
+  /* ---- utilidades ---- */
+  function h(tag, props) {
+    var el = document.createElement(tag);
+    props = props || {};
+    Object.keys(props).forEach(function (k) {
+      var v = props[k];
+      if (v == null || v === false) return;
+      if (k === "class") el.className = v;
+      else if (k === "text") el.textContent = v;
+      else if (k.indexOf("on") === 0) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v);
+    });
+    (function add(lista) {
+      for (var i = 0; i < lista.length; i++) {
+        var c = lista[i];
+        if (c == null || c === false) continue;
+        if (Array.isArray(c)) add(c);
+        else el.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+      }
+    })(Array.prototype.slice.call(arguments, 2));
+    return el;
+  }
+  function $(id) { return document.getElementById(id); }
+  function wa(msg) { return "https://wa.me/" + L.whatsapp + "?text=" + encodeURIComponent(msg); }
+  function icone() { var s = document.createElement("span"); s.innerHTML = WA_SVG; return s.firstChild; }
+  function botaoWa(rotulo, msg, classe) {
+    var a = h("a", { class: "btn " + (classe || ""), href: wa(msg), target: "_blank", rel: "noopener" });
+    a.appendChild(icone());
+    a.appendChild(document.createTextNode(rotulo));
+    return a;
+  }
+  function foto(arquivo, alt) {
+    var box = h("div", { class: "foto" });
+    function vazia() {
+      box.className = "foto vazia";
+      box.textContent = "";
+      box.appendChild(h("span", { class: "ph-tag", text: "[FOTO]" }));
+      box.appendChild(h("span", { class: "ph-nome", text: arquivo || "(sem arquivo)" }));
+    }
+    if (!arquivo) { vazia(); return box; }
+    var img = h("img", { alt: alt || "", loading: "lazy", decoding: "async" });
+    img.addEventListener("error", vazia);
+    img.src = "imagens/" + arquivo;
+    box.appendChild(img);
+    return box;
+  }
+  var toastTimer;
+  function aviso(texto) {
+    var t = document.querySelector(".toast");
+    if (t) t.remove();
+    t = h("div", { class: "toast", role: "status", text: texto });
+    document.body.appendChild(t);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.remove(); }, 3500);
+  }
+
+  /* ---- barra e menu ---- */
+  var marca = $("marca");
+  var pn = L.nome.split(" ");
+  function marcaTexto() {
+    marca.textContent = "";
+    marca.appendChild(document.createTextNode(pn.slice(0, -1).join(" ") + " "));
+    marca.appendChild(h("b", { text: pn[pn.length - 1] }));
+  }
+  if (L.logo) {
+    var logoImg = h("img", { alt: L.nome + " - " + L.segmento });
+    logoImg.addEventListener("error", marcaTexto);   // sem logo na pasta: mostra o nome em texto
+    logoImg.src = "imagens/" + L.logo;
+    marca.appendChild(logoImg);
+  } else marcaTexto();
+  var secoes = [
+    ["catalogo", "Loja"], ["testdrive", "Test drive"], ["assistencia", "Assistência técnica"],
+    ["videos", "Vídeos de manutenção"], ["seminovos", "Seminovos e consignados"], ["sobre", "Sobre nós"],
+    ["beneficios", "Benefícios"], ["feedbacks", "Feedbacks"], ["duvidas", "Perguntas frequentes"],
+    ["onde", "Onde estamos"], ["trabalhe", "Trabalhe conosco"]
+  ];
+  var menu = $("menuLista"), menuBtn = $("menuBtn");
+  secoes.forEach(function (s) {
+    menu.appendChild(h("a", { href: "#" + s[0], text: s[1], onclick: fechaMenu }));
+  });
+  function fechaMenu() { menu.classList.remove("aberto"); menuBtn.setAttribute("aria-expanded", "false"); }
+  menuBtn.addEventListener("click", function () {
+    var aberto = menu.classList.toggle("aberto");
+    menuBtn.setAttribute("aria-expanded", String(aberto));
+  });
+
+  /* ---- horários ---- */
+  function fmtH(n) {
+    var hh = Math.floor(n), mm = Math.round((n - hh) * 60);
+    return hh + "h" + (mm ? String(mm).padStart(2, "0") : "");
+  }
+  function textoHorario(x) { return x.fechado ? "Fechado" : fmtH(x.abre) + " às " + fmtH(x.fecha); }
+  function agoraBrasil() {
+    var partes = new Intl.DateTimeFormat("en-US", { timeZone: "America/Sao_Paulo", weekday: "short",
+      hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(new Date());
+    var o = {};
+    partes.forEach(function (p) { o[p.type] = p.value; });
+    var dia = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(o.weekday);
+    return { dia: dia, hora: parseInt(o.hour, 10) + parseInt(o.minute, 10) / 60 };
+  }
+  function faixaDoDia(dia) {
+    for (var i = 0; i < L.horario.length; i++) if (L.horario[i].dias.indexOf(dia) >= 0) return L.horario[i];
+    return null;
+  }
+
+  /* ---- 1. topo ---- */
+  $("heroSegmento").textContent = L.segmento;
+  var h1 = $("heroNome");
+  var partes = L.nome.split(" ");
+  h1.appendChild(document.createTextNode(partes.slice(0, -1).join(" ") + " "));
+  h1.appendChild(h("span", { text: partes[partes.length - 1] }));
+  $("heroFrase").textContent = L.frase;
+  $("heroBotao").appendChild(botaoWa("Falar no WhatsApp", DADOS.mensagens.geral));
+
+  /* botão Horários: abre/fecha o painel com os horários e o botão de agendar */
+  var btnHor = h("button", { class: "btn sec", type: "button", "aria-expanded": "false", "aria-controls": "painelHorarios", text: "🕒 Horários" });
+  var painel = h("div", { class: "horarios", id: "painelHorarios", hidden: "" });
+  function desenhaHorarios() {
+    var agora = agoraBrasil(), faixa = faixaDoDia(agora.dia);
+    var aberto = faixa && !faixa.fechado && agora.hora >= faixa.abre && agora.hora < faixa.fecha;
+    painel.textContent = "";
+    painel.appendChild(h("div", { class: "status " + (aberto ? "aberto" : "fechado"),
+      text: aberto ? "Aberto agora" : "Fechado agora" }));
+    var ul = h("ul");
+    L.horario.forEach(function (x) {
+      ul.appendChild(h("li", { class: x.dias.indexOf(agora.dia) >= 0 ? "hoje" : "" },
+        h("span", { text: x.dia }), h("span", { class: "h", text: textoHorario(x) })));
+    });
+    painel.appendChild(ul);
+    painel.appendChild(botaoWa("Agendar horário", DADOS.mensagens.agendarHorario));
+  }
+  btnHor.addEventListener("click", function () {
+    var abrir = painel.hasAttribute("hidden");
+    if (abrir) { desenhaHorarios(); painel.removeAttribute("hidden"); } else painel.setAttribute("hidden", "");
+    btnHor.setAttribute("aria-expanded", String(abrir));
+  });
+  $("heroBotao").appendChild(btnHor);
+  $("heroHorarios").appendChild(painel);
+  $("heroFoto").appendChild(foto(L.fotoFachada, "Fachada da loja " + L.nome));
+  document.querySelector("#heroFoto .foto").classList.add("fachada");
+
+  /* ---- 2. catálogo ---- */
+  function cardProduto(p) {
+    var selos = [];
+    if (p.condicao) selos.push(h("span", { class: "selo", text: p.condicao }));
+    if (p.precoExemplo) selos.push(h("span", { class: "selo ex", text: "Preço de exemplo" }));
+    else if (p.exemplo) selos.push(h("span", { class: "selo ex", text: "Exemplo" }));
+    var corpo = h("div", { class: "card-corpo" },
+      selos.length ? h("div", { class: "selos" }, selos) : null,
+      h("h3", { text: p.nome }),
+      p.preco ? h("div", { class: "preco", text: p.preco }) : null,
+      p.potencia ? h("div", { class: "dado" }, "Potência", h("b", { text: p.potencia })) : null,
+      p.autonomia ? h("div", { class: "dado" }, "Autonomia", h("b", { text: p.autonomia })) : null,
+      botaoWa("Tenho interesse", DADOS.mensagens.interesse.replace("{NOME}", p.nome))
+    );
+    return h("article", { class: "card" }, foto(p.foto, p.nome), corpo);
+  }
+  var filtroAtual = "todos";
+  function desenhaCatalogo() {
+    var lista = DADOS.produtos.filter(function (p) { return filtroAtual === "todos" || p.categoria === filtroAtual; });
+    var grade = $("gradeProdutos");
+    grade.textContent = "";
+    if (!lista.length) grade.appendChild(h("p", { class: "vazio", text: "Nenhum item nesta categoria no momento." }));
+    lista.forEach(function (p) { grade.appendChild(cardProduto(p)); });
+  }
+  var filtros = $("filtros");
+  function chip(id, nome) {
+    var b = h("button", { class: "chip", type: "button", "aria-pressed": String(id === filtroAtual), text: nome });
+    b.addEventListener("click", function () {
+      filtroAtual = id;
+      Array.prototype.forEach.call(filtros.children, function (c) { c.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      desenhaCatalogo();
+    });
+    return b;
+  }
+  filtros.appendChild(chip("todos", "Todos"));
+  DADOS.categorias.forEach(function (c) { filtros.appendChild(chip(c.id, c.nome)); });
+  desenhaCatalogo();
+
+  /* ---- 3. test drive ---- */
+  $("testdriveBotao").appendChild(botaoWa("Agendar test drive", DADOS.mensagens.testDrive));
+
+  /* ---- 4. assistência ---- */
+  var A = DADOS.assistencia;
+  $("assistenciaAviso").textContent = A.texto;
+  if (A.titulo) $("assistenciaTitulo").textContent = A.titulo;
+  A.servicos.forEach(function (sv) {
+    var msg = DADOS.mensagens.servico.replace("{SERVICO}", sv.servico).replace("{PRECO}", sv.preco);
+    var go = h("span", { class: "go", "aria-hidden": "true" });
+    go.appendChild(icone());
+    $("listaServicos").appendChild(h("li", null,
+      h("a", { class: "servico", href: wa(msg), target: "_blank", rel: "noopener" },
+        h("span", { class: "nome" }, sv.servico, sv.nota ? h("small", { text: sv.nota }) : null),
+        h("span", { class: "preco", text: sv.preco }), go)));
+  });
+  $("assistenciaObs").textContent = A.observacao || "";
+  $("assistenciaBotao").appendChild(botaoWa("Agendar avaliação", DADOS.mensagens.avaliacao));
+
+  /* ---- 5. vídeos ---- */
+  function embedInsta(link) {
+    if (!/^https:\/\/www\.instagram\.com\/(reel|p|tv)\/[\w-]+/.test(link || "")) return "";
+    return link.split("?")[0].replace(/\/?$/, "/") + "embed";
+  }
+  function cardVideo(v) {
+    var src = embedInsta(v.link);
+    var caixa = h("div", { class: "video" });
+    if (v.arquivo) {
+      var vid = h("video", { src: "videos/" + v.arquivo, poster: v.capa ? "videos/" + v.capa : null, controls: "", preload: "metadata", playsinline: "", title: v.titulo });
+      // só um vídeo toca por vez
+      vid.addEventListener("play", function () {
+        Array.prototype.forEach.call(document.querySelectorAll("video"), function (o) { if (o !== vid) o.pause(); });
+      });
+      caixa.appendChild(vid);
+    } else if (src) caixa.appendChild(h("iframe", { src: src, title: v.titulo, loading: "lazy", allowfullscreen: "" }));
+    else {
+      var ph = foto("", v.titulo);
+      ph.firstChild.textContent = "[VÍDEO]";
+      ph.appendChild(h("span", { class: "ph-nome", text: "Coloque o vídeo em dados.js" }));
+      caixa.appendChild(ph);
+    }
+    caixa.appendChild(h("p", { text: v.titulo }));
+    return caixa;
+  }
+  if (DADOS.videos.length) DADOS.videos.forEach(function (v) { $("listaVideos").appendChild(cardVideo(v)); });
+  else {
+    $("listaVideos").className = "";
+    $("listaVideos").appendChild(h("div", { class: "embreve" }, h("b", { text: "EM BREVE" }), h("p", { text: DADOS.videosEmBreve })));
+  }
+  var vi = $("videosInsta");
+  vi.href = L.instagramUrl;
+  vi.textContent = "Ver mais no Instagram " + L.instagram;
+
+  /* ---- 6. seminovos ---- */
+  DADOS.seminovos.forEach(function (p) { $("gradeSeminovos").appendChild(cardProduto(p)); });
+
+  /* ---- 7. sobre ---- */
+  DADOS.sobre.texto.forEach(function (t) { $("sobreTexto").appendChild(h("p", { text: t })); });
+  DADOS.sobre.fotos.forEach(function (f) {
+    $("sobreFotos").appendChild(h("figure", null, foto(f.arquivo, f.legenda), h("figcaption", { text: f.legenda })));
+  });
+
+  /* ---- 8. benefícios ---- */
+  DADOS.beneficios.forEach(function (b) {
+    $("listaBeneficios").appendChild(h("div", { class: "beneficio" },
+      h("div", { class: "ico", "aria-hidden": "true", text: b.icone }),
+      h("h3", { text: b.titulo }), h("p", { text: b.texto })));
+  });
+
+  /* ---- 9. feedbacks: carrossel automático de vídeos e fotos ---- */
+  var FB = DADOS.feedbacks;
+  if (FB.titulo) $("feedbacksTitulo").textContent = FB.titulo;
+  $("feedbacksTexto").textContent = FB.texto;
+  $("seloSatisfacao").appendChild(foto(L.selo, "Selo Mega Motors"));
+  var carrossel = $("videosClientes");
+  FB.itens.forEach(function (it) {
+    if (it.tipo === "video") carrossel.appendChild(cardVideo(it));
+    else carrossel.appendChild(h("div", { class: "video foto-slide" }, foto(it.arquivo, it.titulo), h("p", { text: it.titulo || "" })));
+  });
+  (function () {
+    var itens = carrossel.children, pausaAte = 0, visivel = false, tocando = 0;
+    function alvo(i) { return itens[i].offsetLeft - itens[0].offsetLeft; }
+    function atual() {
+      var melhor = 0, d = 1e9;
+      for (var i = 0; i < itens.length; i++) { var x = Math.abs(alvo(i) - carrossel.scrollLeft); if (x < d) { d = x; melhor = i; } }
+      return melhor;
+    }
+    function ir(i) { carrossel.scrollTo({ left: alvo(i), behavior: "smooth" }); }
+    function proximo(dir) {
+      var n = itens.length, i = atual() + dir;
+      var fim = carrossel.scrollLeft + carrossel.clientWidth >= carrossel.scrollWidth - 4;
+      if (dir > 0 && (fim || i >= n)) i = 0;
+      if (dir < 0 && i < 0) i = n - 1;
+      ir(i);
+    }
+    function pausar(ms) { pausaAte = Date.now() + ms; }
+    ["pointerdown", "wheel", "focusin"].forEach(function (ev) { carrossel.addEventListener(ev, function () { pausar(9000); }, { passive: true }); });
+    $("setaEsq").addEventListener("click", function () { pausar(9000); proximo(-1); });
+    $("setaDir").addEventListener("click", function () { pausar(9000); proximo(1); });
+    carrossel.addEventListener("play", function () { tocando++; }, true);
+    carrossel.addEventListener("pause", function () { tocando = Math.max(0, tocando - 1); pausar(4000); }, true);
+    carrossel.addEventListener("ended", function () { pausar(1500); }, true);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (e) { visivel = e[0].isIntersecting; }, { threshold: 0.3 }).observe(carrossel);
+    } else visivel = true;
+    var semMovimento = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!semMovimento && itens.length > 1) {
+      setInterval(function () {
+        if (!visivel || document.hidden || tocando || Date.now() < pausaAte) return;
+        proximo(1);
+      }, 4500);
+    }
+  })();
+  $("btnGoogle").addEventListener("click", function () {
+    if (L.googleAvaliacaoUrl) window.open(L.googleAvaliacaoUrl, "_blank", "noopener");
+    else aviso("Link de avaliação do Google ainda não configurado (prévia).");
+  });
+
+  /* ---- 10. perguntas em formato de chat ---- */
+  var msgs = $("chatMsgs"), opcoes = $("chatOpcoes");
+  var reduzido = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function bolha(texto, quem, extra) {
+    var b = h("div", { class: "bolha " + quem + (extra ? " " + extra : ""), text: texto });
+    msgs.appendChild(b);
+    msgs.scrollTop = msgs.scrollHeight;
+    return b;
+  }
+  function inicioChat() {
+    msgs.textContent = "";
+    bolha("Olá! Toque em uma pergunta abaixo que eu respondo.", "bot");
+  }
+  inicioChat();
+  DADOS.perguntas.forEach(function (q) {
+    opcoes.appendChild(h("button", { class: "opcao", type: "button", text: q.pergunta, onclick: function () {
+      bolha(q.pergunta, "eu");
+      var digitando = bolha("• • •", "bot", "digitando");
+      setTimeout(function () { digitando.remove(); bolha(q.resposta, "bot"); }, reduzido ? 0 : 450);
+    } }));
+  });
+  opcoes.appendChild(h("button", { class: "opcao limpar", type: "button", text: "Recomeçar conversa", onclick: inicioChat }));
+  $("chatRodape").appendChild(botaoWa("Outra dúvida? Fale no WhatsApp", DADOS.mensagens.geral, "sec"));
+
+  /* ---- 11. onde estamos ---- */
+  $("ondeEndereco").textContent = L.endereco;
+  var hor = $("ondeHorario");
+  L.horario.forEach(function (x, i) {
+    if (i) hor.appendChild(document.createElement("br"));
+    hor.appendChild(document.createTextNode(x.dia + ": " + textoHorario(x)));
+  });
+  $("mapa").src = "https://www.google.com/maps?q=" + encodeURIComponent(L.endereco) + "&output=embed";
+  $("btnRota").href = L.mapsUrl || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(L.endereco));
+
+  /* ---- 12. trabalhe conosco ---- */
+  $("trabalheBotao").appendChild(botaoWa("Enviar mensagem no WhatsApp", DADOS.mensagens.trabalhe));
+
+  /* ---- 13. rodapé ---- */
+  $("rodapeNome").textContent = L.nome + " - " + L.segmento;
+  if (L.logo) {
+    var lr = h("img", { class: "logo-rodape", alt: "", src: "imagens/" + L.logo });
+    lr.addEventListener("error", function () { lr.remove(); });
+    $("rodapeNome").parentNode.insertBefore(lr, $("rodapeNome"));
+  }
+  var c = $("rodapeContatos");
+  c.appendChild(h("a", { href: wa(DADOS.mensagens.geral), target: "_blank", rel: "noopener" },
+    h("small", { text: "WhatsApp" }), L.whatsappExibicao));
+  c.appendChild(L.email.indexOf("@") > 0
+    ? h("a", { href: "mailto:" + L.email }, h("small", { text: "E-mail" }), L.email)
+    : h("span", null, h("small", { text: "E-mail" }), L.email));
+  c.appendChild(h("a", { href: L.instagramUrl, target: "_blank", rel: "noopener" },
+    h("small", { text: "Instagram" }), L.instagram));
+
+  /* ---- 14. whatsapp fixo ---- */
+  var fixo = $("waFixo");
+  fixo.href = wa(DADOS.mensagens.geral);
+  fixo.appendChild(icone());
+
+  /* ---- entrada suave ao rolar (uma vez, só opacidade e deslocamento) ---- */
+  var reduz = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduz) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("vis");
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.08 });
+    var n = 0;
+    Array.prototype.forEach.call(document.querySelectorAll("section h2, #gradeProdutos .card, #gradeSeminovos .card, .beneficio, .fotos2 figure, .info > div"), function (el) {
+      el.classList.add("rev");
+      el.style.transitionDelay = (n++ % 4) * 50 + "ms";
+      io.observe(el);
+    });
+  }
+})();
+</script>
+</body>
+</html>

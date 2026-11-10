@@ -1,0 +1,5 @@
+VIDEOS
+Coloque aqui os videos (.mp4) e escreva o nome do arquivo em dados.js, no campo "arquivo".
+cliente-1.mp4 a cliente-4.mp4 = videos de clientes (secao Feedbacks); cliente-N-capa.jpg = imagem exibida antes do play.
+Videos de manutencao: use o campo "arquivo" da secao videos em dados.js (ex.: { titulo: "Troca de pastilha", link: "", arquivo: "pastilha.mp4" }).
+Dica: videos de ate 20 MB carregam bem no celular. Videos maiores devem ir para o Instagram e entrar pelo campo "link".
